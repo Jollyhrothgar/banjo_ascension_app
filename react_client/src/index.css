@@ -2,4 +2,10 @@
   border: 1px solid red;
 }
 
+/* Wrap divs inside of the score div */
+.score{
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
 

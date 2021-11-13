@@ -1,128 +1,126 @@
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-function Score(props) {
+/**
+ * Defines a measure of tableture using an SVG box. These boxes are smashed
+ * together with CSS.
+ * 
+ * @param {*} props = {
+ *   state: {
+ *     notes: The notes to be played in the measure
+ *     nstrings: The number of strings in the tableture,
+ *     box: {
+ *       height: the height of the svg box containing the measure,
+ *       width: the width of the svg box containing the measure,
+ *       vertical_measure_scaling: the scale factor that shrinks the tableture
+ *     }
+ *   }
+ * } 
+ * @returns 
+ */
+function TabMeasure(props) {
+
+  let measure_height = props.state.box.height * props.state.box.vertical_measure_scaling;
+  let measure_height_offset = (props.state.box.height - measure_height) * 0.5;
+  let nstrings = props.state.nstrings;
+  let vertical_line_spacing = measure_height / (nstrings - 1);
+  // 0 = 1st string, 1 = 2nd string, ...
+  // TODO: why can't this be mapped properly?
+  // let str_height = [];
+  // for(let i = 0; i < nstrings; i++){
+  //   str_height.push(measure_height_offset + i * vertical_line_spacing);
+  // }
   return (
-    <div>Todo...</div>
-  );
+    <svg
+      width={`${props.state.box.width}px`}
+      height={`${props.state.box.height}`}
+      className=""
+    >
+
+      {/* TabMeasure Lines  */}
+      <line
+        x1={0}
+        y1={measure_height_offset}
+        x2={props.state.box.width}
+        y2={measure_height_offset}
+        stroke="black"
+        strokeWidth={2}/>
+      <line
+        x1={0}
+        y1={measure_height_offset + vertical_line_spacing}
+        x2={props.state.box.width}
+        y2={measure_height_offset + vertical_line_spacing}
+        stroke="black"
+        strokeWidth={2}/>
+      <line
+        x1={0}
+        y1={measure_height_offset + 2.0 * vertical_line_spacing}
+        x2={props.state.box.width}
+        y2={measure_height_offset + 2.0 * vertical_line_spacing}
+        stroke="black"
+        strokeWidth={2}/>
+      <line
+        x1={0}
+        y1={measure_height_offset + 3.0 * vertical_line_spacing}
+        x2={props.state.box.width}
+        y2={measure_height_offset + 3.0 * vertical_line_spacing}
+        stroke="black"
+        strokeWidth={2}/>
+      <line
+        x1={0}
+        y1={measure_height_offset + 4.0 * vertical_line_spacing}
+        x2={props.state.box.width}
+        y2={measure_height_offset + 4.0 * vertical_line_spacing}
+        stroke="black"
+        strokeWidth={2}/>
+
+      {/* TabMeasure Edges */}
+      <line
+        x1={0}
+        y1={measure_height_offset}
+        x2={0}
+        y2={measure_height_offset + 4.0 * vertical_line_spacing}
+        stroke="black"
+        strokeWidth={2}/>
+      <line
+        x1={props.state.box.width}
+        y1={measure_height_offset}
+        x2={props.state.box.width}
+        y2={measure_height_offset + 4.0 * vertical_line_spacing}
+        stroke="black"
+        strokeWidth={2}/>
+
+      {/*Render Notes*/}
+      <text x="20" y="35" className="small">{props.state.notes}</text>
+    </svg>
+  )
 }
 
-function ScoreLine(props) {
+function Composer(props) {
+
+  let measures = [];
+
+  for( let i = 0; i < 16; i++) {
+    measures.push({
+      notes: "a, b, c, d",
+      nstrings: 5.0,
+      box: {
+        width: 300,
+        height: 120,
+        vertical_measure_scaling: 0.5
+      }
+    });
+  }
+
+
   return (
-    <div>Todo...</div>
-  );
-}
-
-function Measure(props) {
-  return (
-    <div className="measure devbox"> 
-      <div>
-        {props.state.notes}
-      </div>
-      <div>
-        <svg
-          width={`${props.state.box.width}px`}
-          height={`${props.state.box.height}`}
-          className=""
-        >
-
-          {/* Measure Lines  */}
-          <line
-            x1={0}
-            y1={0}
-            x2={props.state.box.width}
-            y2={0}
-            stroke="black"
-            stroke-width={2}/>
-          <line
-            x1={0}
-            y1={props.state.box.height/4.0}
-            x2={props.state.box.width}
-            y2={props.state.box.height / 4.0}
-            stroke="black"
-            stroke-width={2}/>
-          <line
-            x1={0}
-            y1={2.0 * props.state.box.height/4.0}
-            x2={props.state.box.width}
-            y2={2.0 * props.state.box.height / 4.0}
-            stroke="black"
-            stroke-width={2}/>
-          <line
-            x1={0}
-            y1={3.0 * props.state.box.height/4.0}
-            x2={props.state.box.width}
-            y2={3.0 * props.state.box.height / 4.0}
-            stroke="black"
-            stroke-width={2}/>
-          <line
-            x1={0}
-            y1={props.state.box.height}
-            x2={props.state.box.width}
-            y2={props.state.box.height}
-            stroke="black"
-            stroke-width={2}/>
-
-          {/* Measure Edges */}
-          <line
-            x1={0}
-            y1={0}
-            x2={0}
-            y2={props.state.box.height}
-            stroke="black"
-            stroke-width={2}/>
-          <line
-            x1={props.state.box.width}
-            y1={0}
-            x2={props.state.box.width}
-            y2={props.state.box.height}
-            stroke="black"
-            stroke-width={2}/>
-        </svg>
-      </div>
+    <div className="score devbox">
+      {/* TODO: add a unique key */}
+      {measures.map((state) => <TabMeasure state={state} />)}
     </div>
   );
-}
-
-class Composer extends React.Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      dummy_state: "The state!",
-    }
-  }
-  
-  render () {
-    return (
-      <div className="composer devbox">
-        <div>
-          {this.state.dummy_state}
-        </div>
-        <div className="score">
-          <Measure
-            state={{
-              notes: "a b c d",
-              box: {
-                width: 300,
-                height: 100
-              },
-            }}
-          />
-          <Measure
-            state={{
-              notes: "1 2 3 4",
-              box: {
-                width: 400,
-                height: 100
-              },
-            }}
-          />
-        </div>
-      </div>
-    );
-  }
-}
+};
 
 ReactDOM.render(
   <Composer />,
