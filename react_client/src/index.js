@@ -20,7 +20,7 @@ import "./index.css";
  * @returns 
  */
 function TabMeasure(props) {
-
+  // TODO: Measure should also render notes.
   let measure_height = props.state.box.height * props.state.box.vertical_measure_scaling;
   let measure_height_offset = (props.state.box.height - measure_height) * 0.5;
   let nstrings = props.state.nstrings;
@@ -97,7 +97,7 @@ function TabMeasure(props) {
   )
 }
 
-function Composer(props) {
+function Score(props) {
 
   let measures = [];
 
@@ -113,7 +113,6 @@ function Composer(props) {
     });
   }
 
-
   return (
     <div className="score devbox">
       {/* TODO: add a unique key */}
@@ -123,6 +122,6 @@ function Composer(props) {
 };
 
 ReactDOM.render(
-  <Composer />,
+  <Score />,
   document.getElementById("root")
 );
